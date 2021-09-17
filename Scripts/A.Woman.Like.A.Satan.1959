@@ -1,0 +1,29 @@
+import vapoursynth as vs
+import rekt
+import awsmfunc as awf
+import fvsfunc as fvf
+import muvsfunc as muv
+import mvsfunc as mvf
+import kagefunc as kgf
+import adptvgrnMod
+import functools
+import vsutil
+core = vs.core
+
+#Load and crop
+core.max_cache_size = 10000
+video = core.lsmas.LWLibavSource(source='E:\\Encoding\\Workshop\\A.Woman.Like.Satan.1959\\source.mkv')
+video = core.std.CropRel(video, top=130, bottom=130)
+video2 = vsutil.depth(video, 16)
+video2 = awf.fb(video2, bottom=1)
+video2 = awf.bbmod(video2, top=2, thresh=128, blur=20)
+#deband = core.neo_f3kdb.Deband(video2, y=45, cb=45, cr=45, grainy=20, grainc=56, dynamic_grain=True, range=30)
+#video2 = core.remap.Rfs(video2, deband, mappings="[24 500]")
+video2 = vsutil.depth(video2, 8, dither_type='error_diffusion')
+#video2 = awf.SelectRangeEvery(video2, every=15000, length=250, offset=[3000, 7000])
+
+video2.set_output()
+
+
+#deband scenes
+#scene 1: 551-3535 (intro red curtain)
